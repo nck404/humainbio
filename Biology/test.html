@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hiệu Ứng Mưa Icon Sinh Học Trong Hộp</title>
+    <style>
+        /* ========================================================= */
+        /* 1. BIẾN VÀ CẤU TRÚC CHUNG */
+        /* ========================================================= */
+        :root {
+            --ctp-pink: #f5bde6; /* Màu hồng nhạt */
+            --ctp-flamingo: #eebebe; /* Màu hồng đậm */
+            --icon-color: rgba(255, 255, 255, 0.6); /* Icon trắng mờ */
+            --bg-body: #36393f; /* Màu nền tối để hiệu ứng nổi bật */
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 100px; /* Thêm padding để hộp nằm giữa */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        /* ========================================================= */
+        /* 2. TITLE-BOX: Hộp Tiêu Đề */
+        /* ========================================================= */
+        .title-box {
+            /* Giữ nguyên style cũ */
+            background: linear-gradient(135deg, var(--ctp-pink), var(--ctp-flamingo));
+            border-radius: 12px;
+            padding: 24px;
+            color: white;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(234, 118, 203, 0.5); /* Tăng shadow */
+            
+            /* Cần thiết cho việc chứa icon */
+            position: relative;
+            overflow: hidden; /* Cắt icon ngoài hộp */
+            width: 400px; 
+            min-height: 150px;
+        }
+
+        /* Đảm bảo nội dung chữ luôn nằm trên lớp icon */
+        .title-box .content {
+            position: relative;
+            z-index: 2; /* Cao hơn icon-container (z-index: 1) */
+            margin: 0;
+        }
+
+        /* CONTAINER ICON */
+        .icon-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; 
+            pointer-events: none; /* Không chặn click */
+        }
+
+        /* Icon riêng lẻ */
+        .icon {
+            position: absolute;
+            font-size: 15px; 
+            color: var(--icon-color);
+            opacity: 0; /* Bắt đầu ẩn, JS sẽ hiện */
+            /* Sử dụng transform cho hiệu suất tốt hơn */
+            will-change: transform; 
+        }
+
+        /* ========================================================= */
+        /* 3. HTML (Cấu trúc với container icon bên trong) */
+        /* ========================================================= */
+    </style>
+</head>
+<body>
+
+    <div class="title-box" id="title-box">
+        <div class="icon-container" id="icon-container">
+            </div>
+        
+        <h1 class="content">BLOG SINH HỌC & CƠ THỂ</h1>
+        <p class="content">Các tế bào và phân tử của cuộc sống.</p>
+    </div>
+
+    <script>
+   
+    </script>
+
+</body>
+</html>
