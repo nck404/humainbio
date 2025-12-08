@@ -1,0 +1,102 @@
+[
+  {
+    "question": "1. Cơ quan nào đảm nhiệm chức năng lọc máu?",
+    "options": ["Tim", "Gan", "Thận", "Phổi"],
+    "correct": 2
+  },
+  {
+    "question": "2. Hệ cơ quan gồm tim và mạch máu gọi là:",
+    "options": ["Hệ bài tiết", "Hệ tuần hoàn", "Hệ hô hấp", "Hệ tiêu hóa"],
+    "correct": 1
+  },
+  {
+    "question": "3. Phổi thuộc hệ cơ quan nào?",
+    "options": ["Tuần hoàn", "Hô hấp", "Tiêu hóa", "Bài tiết"],
+    "correct": 1
+  },
+  {
+    "question": "4. Dạ dày có chức năng chính là:",
+    "options": ["Hấp thụ chất dinh dưỡng", "Vận chuyển máu", "Co bóp, tiêu hoá cơ học & hóa học", "Trao đổi khí"],
+    "correct": 2
+  },
+  {
+    "question": "5. Xương và khớp thuộc hệ:",
+    "options": ["Tiêu hóa", "Hô hấp", "Vận động", "Sinh dục"],
+    "correct": 2
+  },
+  {
+    "question": "6. Cơ quan giúp trao đổi khí với môi trường:",
+    "options": ["Phổi", "Tim", "Gan", "Ruột non"],
+    "correct": 0
+  },
+  {
+    "question": "7. Hệ bài tiết chủ yếu gồm:",
+    "options": ["Thận – da – phổi", "Thận – gan – phổi", "Gan – dạ dày – tim", "Não – tuỷ sống – dây thần kinh"],
+    "correct": 0
+  },
+  {
+    "question": "8. Cơ quan nào không thuộc hệ hô hấp?",
+    "options": ["Phổi", "Khí quản", "Phế nang", "Dạ dày"],
+    "correct": 3
+  },
+  {
+    "question": "9. Chức năng chính của gan:",
+    "options": ["Lọc máu và giải độc", "Trao đổi khí", "Bơm máu", "Tiêu hoá protein"],
+    "correct": 0
+  },
+  {
+    "question": "10. Xương dài nhất trong cơ thể con người là:",
+    "options": ["Xương cánh tay", "Xương đùi", "Xương ống chân", "Xương sườn"],
+    "correct": 1
+  },
+  {
+    "question": "11. Máu được bơm đi nhờ cơ quan:",
+    "options": ["Gan", "Phổi", "Tim", "Lách"],
+    "correct": 2
+  },
+  {
+    "question": "12. Hệ cơ quan nào điều khiển phản xạ?",
+    "options": ["Hệ hô hấp", "Hệ vận động", "Hệ thần kinh", "Hệ tiêu hóa"],
+    "correct": 2
+  },
+  {
+    "question": "13. Cơ quan giúp nghiền và nhào trộn thức ăn trong miệng:",
+    "options": ["Lưỡi", "Răng", "Tuyến nước bọt", "A & B"],
+    "correct": 3
+  },
+  {
+    "question": "14. Hệ miễn dịch có vai trò:",
+    "options": ["Tạo năng lượng", "Chống lại tác nhân gây bệnh", "Khử độc", "Trao đổi khí"],
+    "correct": 1
+  },
+  {
+    "question": "15. Nơi diễn ra chủ yếu hấp thụ nước:",
+    "options": ["Dạ dày", "Ruột non", "Ruột già", "Trực tràng"],
+    "correct": 2
+  },
+  {
+    "question": "16. Hệ cơ quan đảm bảo sinh sản là:",
+    "options": ["Hệ nội tiết", "Hệ sinh dục", "Hệ vận động", "Hệ bài tiết"],
+    "correct": 1
+  },
+  {
+    "question": "17. Cơ hoành thuộc hệ:",
+    "options": ["Vận động", "Hô hấp", "Tiêu hoá", "Nội tiết"],
+    "correct": 1
+  },
+  {
+    "question": "18. Chức năng chính của hệ xương:",
+    "options": ["Bảo vệ – nâng đỡ – vận động", "Hô hấp", "Trao đổi chất", "Điều hoà đường huyết"],
+    "correct": 0
+  },
+  {
+    "question": "19. Hệ cơ quan lớn nhất trong cơ thể người theo diện tích:",
+    "options": ["Da", "Hệ tuần hoàn", "Xương", "Hệ tiêu hóa"],
+    "correct": 0
+  },
+  {
+    "question": "20. Hệ tiêu hóa bắt đầu từ:",
+    "options": ["Dạ dày", "Thực quản", "Miệng", "Ruột non"],
+    "correct": 2
+  }
+]

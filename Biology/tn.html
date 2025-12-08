@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Trắc Nghiệm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --ctp-latte-base: #eff1f5;
+            --ctp-latte-mantle: #e6e9ef;
+            --ctp-latte-crust: #dce0e8;
+            --ctp-latte-text: #4c4f69;
+            --ctp-latte-subtext0: #6c6f85;
+            --ctp-latte-pink: #ea76cb;
+            --ctp-latte-pink-hover: #d74eb8;
+            --ctp-latte-pink-light: #f8d4f0;
+            --ctp-latte-green: #40a02b;
+            --ctp-latte-red: #d20f39;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--ctp-latte-base) 0%, var(--ctp-latte-mantle) 100%);
+            color: var(--ctp-latte-text);
+            min-height: 100vh;
+        }
+        
+        .quiz-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(234, 118, 203, 0.2);
+        }
+        
+        .option-btn {
+            transition: all 0.3s ease;
+            border: 2px solid var(--ctp-latte-crust);
+            background: var(--ctp-latte-base);
+        }
+        
+        .option-btn:hover {
+            border-color: var(--ctp-latte-pink);
+            background: var(--ctp-latte-pink-light);
+            transform: translateY(-2px);
+        }
+        
+        .option-btn.selected {
+            border-color: var(--ctp-latte-pink);
+            background: var(--ctp-latte-pink-light);
+        }
+        
+        .option-btn.correct {
+            border-color: var(--ctp-latte-green);
+            background: #d3f9d8;
+        }
+        
+        .option-btn.wrong {
+            border-color: var(--ctp-latte-red);
+            background: #ffe0e0;
+        }
+        
+        .primary-btn {
+            background: var(--ctp-latte-pink);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .primary-btn:hover {
+            background: var(--ctp-latte-pink-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(234, 118, 203, 0.4);
+        }
+        
+        .progress-bar {
+            background: var(--ctp-latte-crust);
+            height: 8px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, var(--ctp-latte-pink) 0%, var(--ctp-latte-pink-hover) 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-3xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold mb-2" style="color: var(--ctp-latte-pink);">🎯 Trắc Nghiệm Online</h1>
+            <p class="text-lg" style="color: var(--ctp-latte-subtext0);">Kiểm tra kiến thức của bạn</p>
+        </div>
+
+        <!-- Quiz Container -->
+        <div class="quiz-container p-8">
+            <!-- Progress -->
+            <div class="mb-6">
+                <div class="flex justify-between mb-2">
+                    <span class="font-semibold">Câu <span id="currentQuestion">1</span>/<span id="totalQuestions">20</span></span>
+                    <span class="font-semibold">Điểm: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar" style="width: 5%"></div>
+                </div>
+            </div>
+
+            <!-- Question -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold mb-6" id="question">Đang tải câu hỏi...</h2>
+                <div id="options" class="space-y-3"></div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="flex justify-between items-center">
+                <button id="prevBtn" class="px-6 py-3 rounded-lg font-semibold option-btn" disabled>
+                    ← Câu trước
+                </button>
+                <button id="nextBtn" class="px-6 py-3 rounded-lg font-semibold primary-btn">
+                    Câu tiếp →
+                </button>
+            </div>
+        </div>
+
+        <!-- Result Modal -->
+        <div id="resultModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+            <div class="quiz-container p-8 max-w-md w-full text-center">
+                <h2 class="text-3xl font-bold mb-4" style="color: var(--ctp-latte-pink);">🎉 Hoàn thành!</h2>
+                <p class="text-5xl font-bold mb-2" id="finalScore">0/20</p>
+                <p class="text-xl mb-6" id="resultMessage">Tuyệt vời!</p>
+                <button id="restartBtn" class="px-8 py-3 rounded-lg font-semibold primary-btn w-full">
+                    Làm lại
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const defaultQuestions = [
+            {"question": "1. Cơ quan nào đảm nhiệm chức năng lọc máu?", "options": ["Tim", "Gan", "Thận", "Phổi"], "correct": 2},
+            {"question": "2. Hệ cơ quan gồm tim và mạch máu gọi là:", "options": ["Hệ bài tiết", "Hệ tuần hoàn", "Hệ hô hấp", "Hệ tiêu hóa"], "correct": 1},
+            {"question": "3. Phổi thuộc hệ cơ quan nào?", "options": ["Tuần hoàn", "Hô hấp", "Tiêu hóa", "Bài tiết"], "correct": 1},
+            {"question": "4. Dạ dày có chức năng chính là:", "options": ["Hấp thụ chất dinh dưỡng", "Vận chuyển máu", "Co bóp, tiêu hoá cơ học & hóa học", "Trao đổi khí"], "correct": 2},
+            {"question": "5. Xương và khớp thuộc hệ:", "options": ["Tiêu hóa", "Hô hấp", "Vận động", "Sinh dục"], "correct": 2},
+            {"question": "6. Cơ quan giúp trao đổi khí với môi trường:", "options": ["Phổi", "Tim", "Gan", "Ruột non"], "correct": 0},
+            {"question": "7. Hệ bài tiết chủ yếu gồm:", "options": ["Thận – da – phổi", "Thận – gan – phổi", "Gan – dạ dày – tim", "Não – tuỷ sống – dây thần kinh"], "correct": 0},
+            {"question": "8. Cơ quan nào không thuộc hệ hô hấp?", "options": ["Phổi", "Khí quản", "Phế nang", "Dạ dày"], "correct": 3},
+            {"question": "9. Chức năng chính của gan:", "options": ["Lọc máu và giải độc", "Trao đổi khí", "Bơm máu", "Tiêu hoá protein"], "correct": 0},
+            {"question": "10. Xương dài nhất trong cơ thể con người là:", "options": ["Xương cánh tay", "Xương đùi", "Xương ống chân", "Xương sườn"], "correct": 1},
+            {"question": "11. Máu được bơm đi nhờ cơ quan:", "options": ["Gan", "Phổi", "Tim", "Lách"], "correct": 2},
+            {"question": "12. Hệ cơ quan nào điều khiển phản xạ?", "options": ["Hệ hô hấp", "Hệ vận động", "Hệ thần kinh", "Hệ tiêu hóa"], "correct": 2},
+            {"question": "13. Cơ quan giúp nghiền và nhào trộn thức ăn trong miệng:", "options": ["Lưỡi", "Răng", "Tuyến nước bọt", "A & B"], "correct": 3},
+            {"question": "14. Hệ miễn dịch có vai trò:", "options": ["Tạo năng lượng", "Chống lại tác nhân gây bệnh", "Khử độc", "Trao đổi khí"], "correct": 1},
+            {"question": "15. Nơi diễn ra chủ yếu hấp thụ nước:", "options": ["Dạ dày", "Ruột non", "Ruột già", "Trực tràng"], "correct": 2},
+            {"question": "16. Hệ cơ quan đảm bảo sinh sản là:", "options": ["Hệ nội tiết", "Hệ sinh dục", "Hệ vận động", "Hệ bài tiết"], "correct": 1},
+            {"question": "17. Cơ hoành thuộc hệ:", "options": ["Vận động", "Hô hấp", "Tiêu hoá", "Nội tiết"], "correct": 1},
+            {"question": "18. Chức năng chính của hệ xương:", "options": ["Bảo vệ – nâng đỡ – vận động", "Hô hấp", "Trao đổi chất", "Điều hoà đường huyết"], "correct": 0},
+            {"question": "19. Hệ cơ quan lớn nhất trong cơ thể người theo diện tích:", "options": ["Da", "Hệ tuần hoàn", "Xương", "Hệ tiêu hóa"], "correct": 0},
+            {"question": "20. Hệ tiêu hóa bắt đầu từ:", "options": ["Dạ dày", "Thực quản", "Miệng", "Ruột non"], "correct": 2}
+        ];
+
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+
+        // Get query parameter
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Load questions from JSON file or use default
+        async function loadQuestions() {
+            const queFile = getQueryParam('que');
+            
+            if (queFile) {
+                try {
+                    // Tự động thêm đường dẫn folder 'c' nếu chưa có
+                    const filePath = queFile.includes('/') ? queFile : `c/${queFile}`;
+                    const response = await fetch(filePath);
+                    if (response.ok) {
+                        questions = await response.json();
+                    } else {
+                        console.error('Không thể tải file câu hỏi, sử dụng câu hỏi mặc định');
+                        questions = defaultQuestions;
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi tải câu hỏi:', error);
+                    questions = defaultQuestions;
+                }
+            } else {
+                questions = defaultQuestions;
+            }
+
+            userAnswers = new Array(questions.length).fill(null);
+            displayQuestion();
+            updateUI();
+        }
+
+        // Display current question
+        function displayQuestion() {
+            const question = questions[currentQuestionIndex];
+            document.getElementById('question').textContent = question.question;
+            
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            
+            const isAnswered = userAnswers[currentQuestionIndex] !== null;
+            const correctAnswer = question.correct;
+            const userAnswer = userAnswers[currentQuestionIndex];
+            
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-btn w-full text-left p-4 rounded-lg font-medium';
+                button.innerHTML = `<span class="font-bold" style="color: var(--ctp-latte-pink)">${String.fromCharCode(65 + index)}.</span> ${option}`;
+                
+                if (isAnswered) {
+                    button.disabled = true;
+                    button.style.cursor = 'default';
+                    
+                    if (index === correctAnswer) {
+                        button.classList.add('correct');
+                    } else if (index === userAnswer) {
+                        button.classList.add('wrong');
+                    }
+                } else {
+                    button.onclick = () => selectAnswer(index);
+                }
+                
+                optionsDiv.appendChild(button);
+            });
+        }
+
+        // Select answer
+        function selectAnswer(index) {
+            if (userAnswers[currentQuestionIndex] !== null) return; // Đã trả lời rồi
+            
+            userAnswers[currentQuestionIndex] = index;
+            const correctAnswer = questions[currentQuestionIndex].correct;
+            
+            if (index === correctAnswer) {
+                score++;
+                document.getElementById('score').textContent = score;
+            }
+            
+            // Hiển thị đúng/sai
+            const buttons = document.getElementById('options').children;
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].disabled = true;
+                buttons[i].style.cursor = 'default';
+                
+                if (i === correctAnswer) {
+                    buttons[i].classList.add('correct');
+                } else if (i === index) {
+                    buttons[i].classList.add('wrong');
+                }
+            }
+        }
+
+        // Update UI elements
+        function updateUI() {
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            document.getElementById('totalQuestions').textContent = questions.length;
+            document.getElementById('score').textContent = score;
+            
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+            document.getElementById('nextBtn').textContent = currentQuestionIndex === questions.length - 1 ? 'Nộp bài' : 'Câu tiếp →';
+        }
+
+        // Next question
+        document.getElementById('nextBtn').onclick = () => {
+            if (currentQuestionIndex === questions.length - 1) {
+                calculateScore();
+                showResult();
+            } else {
+                currentQuestionIndex++;
+                displayQuestion();
+                updateUI();
+            }
+        };
+
+        // Previous question
+        document.getElementById('prevBtn').onclick = () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+                updateUI();
+            }
+        };
+
+        // Calculate score
+        function calculateScore() {
+            score = 0;
+            userAnswers.forEach((answer, index) => {
+                if (answer === questions[index].correct) {
+                    score++;
+                }
+            });
+        }
+
+        // Show result
+        function showResult() {
+            document.getElementById('finalScore').textContent = `${score}/${questions.length}`;
+            
+            const percentage = (score / questions.length) * 100;
+            let message = '';
+            
+            if (percentage >= 90) message = '🏆 Xuất sắc!';
+            else if (percentage >= 70) message = '😊 Giỏi lắm!';
+            else if (percentage >= 50) message = '👍 Khá tốt!';
+            else message = '💪 Cố gắng thêm nhé!';
+            
+            document.getElementById('resultMessage').textContent = message;
+            document.getElementById('resultModal').classList.remove('hidden');
+        }
+
+        // Restart quiz
+        document.getElementById('restartBtn').onclick = () => {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            document.getElementById('resultModal').classList.add('hidden');
+            displayQuestion();
+            updateUI();
+        };
+
+        // Initialize
+        loadQuestions();
+    </script>
+</body>
+</html>
