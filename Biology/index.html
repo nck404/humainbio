@@ -176,7 +176,9 @@
             
             if (queFile) {
                 try {
-                    const response = await fetch(queFile);
+                    // Tự động thêm đường dẫn folder 'c' nếu chưa có
+                    const filePath = queFile.includes('/') ? queFile : `c/${queFile}`;
+                    const response = await fetch(filePath);
                     if (response.ok) {
                         questions = await response.json();
                     } else {
