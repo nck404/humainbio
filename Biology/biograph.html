@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sơ đồ Cơ thể Người</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.0/marked.min.js"></script>
+    <style>
+        :root {
+            --ctp-latte-base: #eff1f5;
+            --ctp-latte-mantle: #e6e9ef;
+            --ctp-latte-pink: #ea76cb;
+            --ctp-latte-text: #4c4f69;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--ctp-latte-base) 0%, var(--ctp-latte-mantle) 100%);
+            font-family: system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+        }
+        
+        .body-diagram {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .body-diagram img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .organ-hotspot {
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            border-radius: 50%;
+            background: rgba(234, 118, 203, 0.1);
+        }
+        
+        .organ-hotspot:hover {
+            background: rgba(234, 118, 203, 0.3);
+            border-color: var(--ctp-latte-pink);
+            transform: scale(1.1);
+        }
+        
+        .info-window {
+            position: fixed;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(234, 118, 203, 0.3);
+            padding: 24px;
+            min-width: 320px;
+            max-width: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .info-window.active {
+            display: block;
+        }
+        
+        .window-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            cursor: move;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--ctp-latte-mantle);
+        }
+        
+        .close-btn {
+            background: var(--ctp-latte-pink);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            transform: scale(1.1);
+            background: #d74eb8;
+        }
+        
+        .markdown-content {
+            color: var(--ctp-latte-text);
+            line-height: 1.6;
+        }
+        
+        .markdown-content h3 {
+            color: var(--ctp-latte-pink);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        
+        .markdown-content h4 {
+            color: var(--ctp-latte-pink);
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .markdown-content ul {
+            list-style: disc;
+            margin-left: 24px;
+            margin-bottom: 12px;
+        }
+        
+        .markdown-content li {
+            margin-bottom: 6px;
+        }
+        
+        .markdown-content strong {
+            color: var(--ctp-latte-pink);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="p-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold mb-2" style="color: var(--ctp-latte-pink);">🫀 Cơ Thể Người</h1>
+            <p class="text-lg" style="color: var(--ctp-latte-text);">Nhấp vào các cơ quan để xem thông tin chi tiết</p>
+        </div>
+
+        <div class="body-diagram">
+            <img src="./msedge_XyuYyFaqH8.png" alt="Human Body Diagram" id="bodyImage">
+            
+            <!-- Hotspots for organs - positions will be adjusted based on actual image -->
+            <div class="organ-hotspot" style="top: 8%; left: 42%; width: 16%; padding-bottom: 16%;" data-organ="brain"></div>
+            <div class="organ-hotspot" style="top: 28%; left: 40%; width: 12%; padding-bottom: 12%;" data-organ="heart"></div>
+            <div class="organ-hotspot" style="top: 25%; left: 30%; width: 10%; padding-bottom: 14%;" data-organ="lungs"></div>
+            <div class="organ-hotspot" style="top: 25%; left: 60%; width: 10%; padding-bottom: 14%;" data-organ="lungs"></div>
+            <div class="organ-hotspot" style="top: 42%; left: 52%; width: 14%; padding-bottom: 10%;" data-organ="liver"></div>
+            <div class="organ-hotspot" style="top: 44%; left: 35%; width: 12%; padding-bottom: 10%;" data-organ="stomach"></div>
+            <div class="organ-hotspot" style="top: 48%; left: 28%; width: 8%; padding-bottom: 10%;" data-organ="kidneys"></div>
+            <div class="organ-hotspot" style="top: 48%; left: 64%; width: 8%; padding-bottom: 10%;" data-organ="kidneys"></div>
+            <div class="organ-hotspot" style="top: 60%; left: 38%; width: 24%; padding-bottom: 15%;" data-organ="intestines"></div>
+        </div>
+    </div>
+
+    <!-- Info Window -->
+    <div id="infoWindow" class="info-window">
+        <div class="window-header" id="windowHeader">
+            <h3 class="text-2xl font-bold" style="color: var(--ctp-latte-pink);" id="organTitle">Cơ quan</h3>
+            <button class="close-btn" id="closeBtn">×</button>
+        </div>
+        <div class="markdown-content" id="organInfo"></div>
+    </div>
+
+    <script>
+        const organData = {
+            brain: `### 🧠 Não Bộ
+
+**Vị trí:** Nằm trong hộp sọ, bảo vệ bởi xương sọ
+
+#### Chức năng chính:
+- Điều khiển tất cả hoạt động của cơ thể
+- Xử lý thông tin từ các giác quan
+- Kiểm soát tư duy, trí nhớ, cảm xúc
+- Điều hòa nhiệt độ cơ thể
+- Kiểm soát nhịp tim và hô hấp
+
+#### Cấu trúc:
+- **Vỏ não:** Xử lý thông tin phức tạp
+- **Tiểu não:** Điều khiển cân bằng và phối hợp vận động
+- **Thân não:** Kiểm soát các chức năng sống cơ bản
+
+**Trọng lượng:** Khoảng 1,3-1,4 kg (chiếm 2% trọng lượng cơ thể)`,
+
+            heart: `### ❤️ Tim
+
+**Vị trí:** Trong lồng ngực, nghiêng về phía trái
+
+#### Chức năng chính:
+- Bơm máu đi khắp cơ thể
+- Cung cấp oxy và chất dinh dưỡng cho các cơ quan
+- Loại bỏ CO₂ và chất thải
+
+#### Cấu trúc:
+- **4 buồng:** 2 tâm nhĩ (trên) và 2 tâm thất (dưới)
+- **Van tim:** Ngăn máu chảy ngược
+- **Cơ tim:** Co bóp liên tục suốt đời
+
+#### Hoạt động:
+- Đập khoảng **100.000 lần/ngày**
+- Bơm khoảng **7.500 lít máu/ngày**
+- Nhịp tim bình thường: 60-100 lần/phút`,
+
+            lungs: `### 🫁 Phổi
+
+**Vị trí:** Trong lồng ngực, hai bên tim
+
+#### Chức năng chính:
+- Trao đổi khí: Hấp thụ O₂, thải CO₂
+- Điều hòa pH máu
+- Lọc máu và bảo vệ cơ thể
+
+#### Cấu trúc:
+- **Phế nang:** Hơn 300 triệu túi khí nhỏ
+- **Phế quản:** Ống dẫn khí vào phổi
+- **Màng phổi:** Bảo vệ và bôi trơn
+
+#### Đặc điểm:
+- Diện tích trao đổi khí: **70-100 m²**
+- Hít thở: 12-20 lần/phút
+- Dung tích: 4-6 lít không khí`,
+
+            liver: `### 🟤 Gan
+
+**Vị trí:** Phía trên bên phải ổ bụng, dưới cơ hoành
+
+#### Chức năng chính:
+- **Giải độc:** Loại bỏ chất độc khỏi máu
+- **Sản xuất mật:** Giúp tiêu hóa chất béo
+- **Chuyển hóa:** Đường, protein, chất béo
+- **Lưu trữ:** Vitamin, khoáng chất, glycogen
+- **Sản xuất protein máu**
+
+#### Đặc điểm:
+- Cơ quan lớn nhất trong cơ thể (ngoài da)
+- Trọng lượng: **1,3-1,8 kg**
+- Có khả năng **tái sinh** tuyệt vời
+- Thực hiện hơn **500 chức năng**`,
+
+            stomach: `### 🫃 Dạ Dày
+
+**Vị trí:** Phía trên bên trái ổ bụng
+
+#### Chức năng chính:
+- Tiêu hóa cơ học: Nghiền, trộn thức ăn
+- Tiêu hóa hóa học: Tiết acid và enzyme
+- Diệt khuẩn bằng acid dạ dày
+- Hấp thụ một số chất (nước, rượu, thuốc)
+
+#### Cấu trúc:
+- Có 3 lớp cơ để co bóp mạnh
+- Niêm mạc tiết acid HCl và pepsin
+- Dung tích: 1-2 lít
+
+#### Quá trình:
+- Thức ăn lưu lại: **2-6 giờ**
+- Sản xuất **2 lít dịch tiêu hóa/ngày**`,
+
+            kidneys: `### 🫘 Thận
+
+**Vị trí:** Hai bên cột sống, sau ổ bụng
+
+#### Chức năng chính:
+- **Lọc máu:** Loại bỏ chất thải và độc tố
+- **Điều hòa nước:** Cân bằng dịch cơ thể
+- **Kiểm soát huyết áp**
+- **Sản xuất hormone:** EPO (tạo hồng cầu)
+- **Cân bằng điện giải**
+
+#### Hoạt động:
+- Lọc **180 lít máu/ngày**
+- Tạo **1-2 lít nước tiểu/ngày**
+- Mỗi thận có **1 triệu nephron**
+
+**Lưu ý:** Con người có thể sống khỏe với chỉ một quả thận`,
+
+            intestines: `### 🌀 Ruột
+
+**Gồm:** Ruột non và ruột già
+
+#### Ruột Non (6-7m):
+- **Chức năng:**
+  - Tiêu hóa thức ăn
+  - Hấp thụ chất dinh dưỡng
+  - Hấp thụ 90% nước
+- **Cấu trúc:** Có hàng triệu nhung mao tăng diện tích hấp thụ
+
+#### Ruột Già (1,5m):
+- **Chức năng:**
+  - Hấp thụ nước và muối khoáng
+  - Tạo phân và đào thải
+  - Chứa hàng nghìn tỷ vi khuẩn có lợi
+- **Các phần:** Manh tràng, đại tràng, trực tràng
+
+**Tổng diện tích hấp thụ:** 250-400 m²`
+        };
+
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+
+        const infoWindow = document.getElementById('infoWindow');
+        const windowHeader = document.getElementById('windowHeader');
+        const closeBtn = document.getElementById('closeBtn');
+        const organTitle = document.getElementById('organTitle');
+        const organInfo = document.getElementById('organInfo');
+
+        // Click on organs
+        document.querySelectorAll('.organ-hotspot').forEach(hotspot => {
+            hotspot.addEventListener('click', function(e) {
+                const organType = this.dataset.organ;
+                const rect = this.getBoundingClientRect();
+                
+                // Show window near the clicked organ
+                const windowX = rect.right + 20;
+                const windowY = rect.top;
+                
+                // Check if window would go off screen
+                if (windowX + 500 > window.innerWidth) {
+                    infoWindow.style.left = (rect.left - 520) + 'px';
+                } else {
+                    infoWindow.style.left = windowX + 'px';
+                }
+                infoWindow.style.top = windowY + 'px';
+                
+                // Update content
+                const organName = {
+                    brain: '🧠 Não Bộ',
+                    heart: '❤️ Tim',
+                    lungs: '🫁 Phổi',
+                    liver: '🟤 Gan',
+                    stomach: '🫃 Dạ Dày',
+                    kidneys: '🫘 Thận',
+                    intestines: '🌀 Ruột'
+                };
+                
+                organTitle.textContent = organName[organType] || 'Cơ quan';
+                organInfo.innerHTML = marked.parse(organData[organType] || 'Thông tin đang được cập nhật...');
+                
+                infoWindow.classList.add('active');
+            });
+        });
+
+        // Close button
+        closeBtn.addEventListener('click', () => {
+            infoWindow.classList.remove('active');
+        });
+
+        // Drag functionality
+        windowHeader.addEventListener('mousedown', dragStart);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+
+        function dragStart(e) {
+            if (e.target === closeBtn) return;
+            
+            isDragging = true;
+            initialX = e.clientX - infoWindow.offsetLeft;
+            initialY = e.clientY - infoWindow.offsetTop;
+        }
+
+        function drag(e) {
+            if (!isDragging) return;
+            
+            e.preventDefault();
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+            
+            infoWindow.style.left = currentX + 'px';
+            infoWindow.style.top = currentY + 'px';
+        }
+
+        function dragEnd() {
+            isDragging = false;
+        }
+
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!infoWindow.contains(e.target) && !e.target.classList.contains('organ-hotspot')) {
+                infoWindow.classList.remove('active');
+            }
+        });
+
+        // Load custom image if provided
+        const urlParams = new URLSearchParams(window.location.search);
+        const customImage = urlParams.get('img');
+        if (customImage) {
+            document.getElementById('bodyImage').src = customImage;
+        }
+    </script>
+</body>
+</html>

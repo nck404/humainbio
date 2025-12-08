@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Lý Thuyết Sinh Học</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="./u/style/docs.css">
+</head>
+<body>
+    <div class="flex">
+        <!-- Mobile Overlay -->
+        <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
+        
+        <!-- Sidebar -->
+        <div class="sidebar w-80 fixed left-0 top-0" id="sidebar">
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <i class='bx bxs-book-heart text-4xl' style="color: var(--ctp-flamingo)"></i>
+                    <h1 class="text-2xl font-bold" style="color: var(--ctp-flamingo)">Sinh Học</h1>
+                </div>
+                
+                <!-- Search -->
+                <div class="relative mb-6" id="searchContainer">
+                    <i class='bx bx-search absolute left-3 top-3 text-xl' style="color: var(--ctp-subtext0)"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput"
+                        placeholder="Tìm kiếm bài học..." 
+                        class="search-box w-full pl-10"
+                    >
+                </div>
+                
+                <!-- Menu -->
+                <div id="menuContainer"></div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+            <i class='bx bx-menu'></i>
+        </button>
+        
+        <!-- Content Area -->
+        <div class="content-area ml-80 flex-1">
+            <div class="max-w-4xl mx-auto">
+                <div class="title-box">
+                    <h1 class="text-3xl font-bold mb-2" id="titleText">Chào mừng đến với Sinh Học!</h1>
+                    <p class="opacity-90" id="subtitleText">Chọn một bài học từ menu bên trái để bắt đầu</p>
+                </div>
+                
+                <div class="markdown-content" id="contentArea">
+                    <div class="text-center py-20">
+                        <i class='bx bx-book-open text-8xl mb-4' style="color: var(--ctp-pink); opacity: 0.3;"></i>
+                        <p class="text-xl" style="color: var(--ctp-subtext1)">Hãy chọn một chủ đề để bắt đầu học</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./u/docs.js"></script>
+</body>
+</html>
