@@ -278,7 +278,7 @@ function loadQuiz(url, title) {
   document.getElementById("contentArea").innerHTML = `
                 <iframe 
                     src="${url}" 
-                    style="width: 100%; height: calc(100vh - 180px); border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"
+                    style="width: 100%; height: calc(100vh - 180px); border: none; border-radius: 12px;"
                     frameborder="0"
                     allowfullscreen
                 ></iframe>
