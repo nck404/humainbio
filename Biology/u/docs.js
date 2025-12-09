@@ -3,7 +3,7 @@ const lessonsData = {
   "Hệ Cơ Quan": {
     icon: "bx-dna",
     lessons: [
-      { title: "Hệ Vận Động", file: "docs/a.md" },
+      { title: "Hệ Vận Động", file: "docs/hevd.md" },
       {
         title: "Chức năng tế bào",
         file: "docs/te-bao-hoc/chuc-nang-te-bao.md",
