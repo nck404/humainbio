@@ -1,9 +1,9 @@
-// Sample data structure - replace with actual markdown files
+
 const lessonsData = {
-  "Tế bào học": {
+  "Hệ Cơ Quan": {
     icon: "bx-dna",
     lessons: [
-      { title: "Cấu trúc tế bào", file: "docs/te-bao-hoc/cau-truc-te-bao.md" },
+      { title: "Hệ Vận Động", file: "docs/a.md" },
       {
         title: "Chức năng tế bào",
         file: "docs/te-bao-hoc/chuc-nang-te-bao.md",
@@ -402,86 +402,85 @@ function closeMobileMenu() {
 
 init();
 
+/* ========================================================= */
+/* 4. JAVASCRIPT (Tạo và Di chuyển Icon Độc Lập) */
+/* ========================================================= */
+const iconContainer = document.getElementById("icon-container");
+const titleBox = document.getElementById("title-box");
 
-     /* ========================================================= */
-        /* 4. JAVASCRIPT (Tạo và Di chuyển Icon Độc Lập) */
-        /* ========================================================= */
-        const iconContainer = document.getElementById('icon-container');
-        const titleBox = document.getElementById('title-box');
-        
-        // Danh sách icon sinh học/cơ thể (Unicode)
-        const iconsList = ['🧠', '🫀', '🧬', '🦴', '🦠', '🧪', '🔬', '🦋', '🍎', '🍄'];
-        const numIcons = 20; 
-        const activeIcons = [];
+// Danh sách icon sinh học/cơ thể (Unicode)
+const iconsList = ["🧠", "🫀", "🧬", "🦴", "🦠", "🧪", "🔬", "🦋", "🍎", "🍄"];
+const numIcons = 20;
+const activeIcons = [];
 
-        function createIcon() {
-            const icon = document.createElement('span');
-            icon.classList.add('icon');
-            icon.innerHTML = iconsList[Math.floor(Math.random() * iconsList.length)];
-            
-            // Thiết lập thuộc tính chuyển động ngẫu nhiên
-            icon.speed = 0.5 + Math.random() * 1.5; 
-            icon.bounce = Math.random() * 20 + 5; 
-            icon.translateX = Math.random() * 0.5 - 0.25; 
-            icon.rotation = Math.random() * 360; 
-            icon.rotateSpeed = Math.random() * 0.3 - 0.15; 
-            
-            // Khởi tạo vị trí bằng thuộc tính data để tránh lỗi parseFloat
-            icon.dataset.top = Math.random() * titleBox.clientHeight;
-            icon.dataset.left = Math.random() * titleBox.clientWidth;
+function createIcon() {
+  const icon = document.createElement("span");
+  icon.classList.add("icon");
+  icon.innerHTML = iconsList[Math.floor(Math.random() * iconsList.length)];
 
-            iconContainer.appendChild(icon);
-            return icon;
-        }
+  // Thiết lập thuộc tính chuyển động ngẫu nhiên
+  icon.speed = 0.5 + Math.random() * 1.5;
+  icon.bounce = Math.random() * 20 + 5;
+  icon.translateX = Math.random() * 0.5 - 0.25;
+  icon.rotation = Math.random() * 360;
+  icon.rotateSpeed = Math.random() * 0.3 - 0.15;
 
-        // Khởi tạo các icon ban đầu
-        for (let i = 0; i < numIcons; i++) {
-            const icon = createIcon();
-            activeIcons.push(icon);
-        }
+  // Khởi tạo vị trí bằng thuộc tính data để tránh lỗi parseFloat
+  icon.dataset.top = Math.random() * titleBox.clientHeight;
+  icon.dataset.left = Math.random() * titleBox.clientWidth;
 
-        // Vòng lặp Animation (Sử dụng requestAnimationFrame cho hiệu suất)
-        function animateBoxRain() {
-            const boxHeight = titleBox.clientHeight;
-            const boxWidth = titleBox.clientWidth;
+  iconContainer.appendChild(icon);
+  return icon;
+}
 
-            activeIcons.forEach((icon) => {
-                let currentTop = parseFloat(icon.dataset.top);
-                let currentLeft = parseFloat(icon.dataset.left);
+// Khởi tạo các icon ban đầu
+for (let i = 0; i < numIcons; i++) {
+  const icon = createIcon();
+  activeIcons.push(icon);
+}
 
-                // 1. Rơi xuống (Y-axis)
-                currentTop += icon.speed; 
-                
-                // 2. Di chuyển ngang (X-axis) & Lắc lư (sử dụng Sine Wave)
-                currentLeft += icon.translateX * Math.sin(currentTop / icon.bounce);
-                
-                // 3. Quay
-                icon.rotation += icon.rotateSpeed;
-                
-                // Cập nhật vị trí và quay bằng CSS Transform
-                icon.style.transform = `translate(${currentLeft}px, ${currentTop}px) rotate(${icon.rotation}deg)`;
-                icon.style.opacity = 0.8; 
-                
-                // Lưu vị trí mới vào dataset
-                icon.dataset.top = currentTop;
-                icon.dataset.left = currentLeft;
+// Vòng lặp Animation (Sử dụng requestAnimationFrame cho hiệu suất)
+function animateBoxRain() {
+  const boxHeight = titleBox.clientHeight;
+  const boxWidth = titleBox.clientWidth;
 
-                // Nếu icon rơi ra khỏi đáy hộp, đặt lại lên trên cùng
-                if (currentTop > boxHeight) {
-                    currentTop = -10; // Đặt lại trên đỉnh
-                    
-                    // Cập nhật lại vị trí và tốc độ ngẫu nhiên mới
-                    icon.dataset.top = currentTop; 
-                    icon.dataset.left = Math.random() * boxWidth;
-                    icon.speed = 0.5 + Math.random() * 1.5;
-                }
-            });
+  activeIcons.forEach((icon) => {
+    let currentTop = parseFloat(icon.dataset.top);
+    let currentLeft = parseFloat(icon.dataset.left);
 
-            requestAnimationFrame(animateBoxRain);
-        }
+    // 1. Rơi xuống (Y-axis)
+    currentTop += icon.speed;
 
-        // Bắt đầu animation sau khi trang tải xong
-        window.addEventListener('load', () => {
-            // Đảm bảo kích thước hộp đã được tính toán chính xác
-            animateBoxRain();
-        });
+    // 2. Di chuyển ngang (X-axis) & Lắc lư (sử dụng Sine Wave)
+    currentLeft += icon.translateX * Math.sin(currentTop / icon.bounce);
+
+    // 3. Quay
+    icon.rotation += icon.rotateSpeed;
+
+    // Cập nhật vị trí và quay bằng CSS Transform
+    icon.style.transform = `translate(${currentLeft}px, ${currentTop}px) rotate(${icon.rotation}deg)`;
+    icon.style.opacity = 0.8;
+
+    // Lưu vị trí mới vào dataset
+    icon.dataset.top = currentTop;
+    icon.dataset.left = currentLeft;
+
+    // Nếu icon rơi ra khỏi đáy hộp, đặt lại lên trên cùng
+    if (currentTop > boxHeight) {
+      currentTop = -10; // Đặt lại trên đỉnh
+
+      // Cập nhật lại vị trí và tốc độ ngẫu nhiên mới
+      icon.dataset.top = currentTop;
+      icon.dataset.left = Math.random() * boxWidth;
+      icon.speed = 0.5 + Math.random() * 1.5;
+    }
+  });
+
+  requestAnimationFrame(animateBoxRain);
+}
+
+// Bắt đầu animation sau khi trang tải xong
+window.addEventListener("load", () => {
+  // Đảm bảo kích thước hộp đã được tính toán chính xác
+  animateBoxRain();
+});
