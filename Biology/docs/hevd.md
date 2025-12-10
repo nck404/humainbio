@@ -41,7 +41,7 @@ Cơ thể người có **206 xương**, chia thành 3 nhóm:
 Khớp là nơi **tiếp nối giữa các xương**.
 
 ### **Phân loại**
-
+  
 1. **Khớp động** (có bao khớp + dịch khớp)
 
    * Ví dụ: khớp gối, khớp khuỷu, khớp vai

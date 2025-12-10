@@ -1,4 +1,3 @@
-
 const lessonsData = {
   "Hệ Cơ Quan": {
     icon: "bx-dna",
@@ -46,10 +45,9 @@ const lessonsData = {
   },
 };
 
-// Quiz links data - Load from JSON file
-const quizLinksFile = "quiz-links.json"; // Path to your JSON file
 
-// Function to load markdown file
+const quizLinksFile = "quiz-links.json";
+
 async function loadMarkdownFile(filePath) {
   try {
     const response = await fetch(filePath);
@@ -64,7 +62,7 @@ async function loadMarkdownFile(filePath) {
   }
 }
 
-// Function to load quiz links from JSON
+
 async function loadQuizLinks() {
   try {
     const response = await fetch(quizLinksFile);
@@ -74,7 +72,7 @@ async function loadQuizLinks() {
     quizLinks = await response.json();
   } catch (error) {
     console.error("Error loading quiz links:", error);
-    // Fallback to sample data
+
     quizLinks = [
       { title: "Tế bào học - Quiz 1", url: "https://humainbio.vercel.app/" },
       { title: "Di truyền học - Quiz 1", url: "https://example.com/quiz2" },
@@ -86,37 +84,47 @@ async function loadQuizLinks() {
 let currentLesson = null;
 let allLessons = [];
 let quizLinks = [];
-let currentView = "lessons"; // 'lessons' or 'quiz'
+let currentView = "lessons"; 
 
-// Initialize menu
 function initMenu() {
   const container = document.getElementById("menuContainer");
   container.innerHTML = "";
 
-  // Add mode switcher
+
   const modeSwitcher = document.createElement("div");
-  modeSwitcher.className = "mb-4 flex gap-2";
+  modeSwitcher.className = "mb-4 flex gap-2 justify-center";
   modeSwitcher.innerHTML = `
-                <button 
-                    id="btnLessons" 
-                    class="mode-btn active"
-                    onclick="switchToLessons()"
-                    title="Lý thuyết"
-                >
-                    <i class='bx bx-book-open'></i>
-                </button>
-                <button 
-                    id="btnQuiz" 
-                    class="mode-btn"
-                    onclick="switchToQuiz()"
-                    title="Trắc nghiệm"
-                >
-                    <i class='bx bx-edit'></i>
-                </button>
-            `;
+  <button 
+      id="btnLessons" 
+      class="mode-btn active"
+      onclick="switchToLessons()"
+      title="Lý thuyết"
+  >
+      <i class='bx bx-book-open'></i>
+  </button>
+
+  <button 
+      id="btnQuiz" 
+      class="mode-btn"
+      onclick="switchToQuiz()"
+      title="Trắc nghiệm"
+  >
+      <i class='bx bx-edit'></i>
+  </button>
+
+  <a 
+      href="./biograph.html" 
+      class="mode-btn"
+      id="btnBio"
+      title="Sinh học số"
+  >
+      <i class='bx bx-child' style = 'font-size:40px'></i> 
+  </a>
+`;
+
   container.appendChild(modeSwitcher);
 
-  // Add content container
+
   const contentDiv = document.createElement("div");
   contentDiv.id = "menuContent";
   container.appendChild(contentDiv);
@@ -124,7 +132,7 @@ function initMenu() {
   renderLessonsMenu();
 }
 
-// Render lessons menu
+
 function renderLessonsMenu() {
   const contentDiv = document.getElementById("menuContent");
   contentDiv.innerHTML = "";
@@ -159,14 +167,13 @@ function renderLessonsMenu() {
                 `;
     contentDiv.appendChild(folderDiv);
 
-    // Store all lessons for search
+
     folderData.lessons.forEach((lesson) => {
       allLessons.push({ ...lesson, folder });
     });
   });
 }
 
-// Render quiz menu
 function renderQuizMenu() {
   const contentDiv = document.getElementById("menuContent");
   contentDiv.innerHTML = "";
@@ -193,43 +200,27 @@ function renderQuizMenu() {
   });
 }
 
-// Switch to lessons view
+
 function switchToLessons() {
   currentView = "lessons";
-
-  // Update buttons
   document.getElementById("btnLessons").classList.add("active");
   document.getElementById("btnQuiz").classList.remove("active");
-
-  // Show search
   document.getElementById("searchContainer").style.display = "block";
-
-  // Render lessons menu
   renderLessonsMenu();
-
-  // Show default content
   showDefaultContent();
 }
 
-// Switch to quiz view
+
 function switchToQuiz() {
   currentView = "quiz";
-
-  // Update buttons
   document.getElementById("btnQuiz").classList.add("active");
   document.getElementById("btnLessons").classList.remove("active");
-
-  // Hide search
   document.getElementById("searchContainer").style.display = "none";
-
-  // Render quiz menu
   renderQuizMenu();
-
-  // Show quiz intro
   showQuizIntro();
 }
 
-// Show default content
+
 function showDefaultContent() {
   document.getElementById("titleText").textContent =
     "Chào mừng đến với Sinh Học!";
@@ -243,7 +234,7 @@ function showDefaultContent() {
             `;
 }
 
-// Show quiz intro
+
 function showQuizIntro() {
   document.getElementById("titleText").textContent = "Trắc nghiệm Sinh Học";
   document.getElementById("subtitleText").textContent =
@@ -256,9 +247,8 @@ function showQuizIntro() {
             `;
 }
 
-// Load quiz in iframe
+
 function loadQuiz(url, title) {
-  // Close mobile menu on mobile
   if (window.innerWidth <= 768) {
     closeMobileMenu();
   }
@@ -266,15 +256,14 @@ function loadQuiz(url, title) {
   document.getElementById("titleText").textContent = title;
   document.getElementById("subtitleText").textContent = "Bài trắc nghiệm";
 
-  // Remove active class from all items
   document.querySelectorAll(".menu-item").forEach((item) => {
     item.classList.remove("active");
   });
 
-  // Add active class to current item
+
   event.currentTarget.classList.add("active");
 
-  // Show iframe
+
   document.getElementById("contentArea").innerHTML = `
                 <iframe 
                     src="${url}" 
@@ -285,7 +274,7 @@ function loadQuiz(url, title) {
             `;
 }
 
-// Toggle folder
+
 function toggleFolder(folderId) {
   const folder = document.getElementById(`folder-${folderId}`);
   const toggle = document.getElementById(`toggle-${folderId}`);
@@ -293,28 +282,26 @@ function toggleFolder(folderId) {
   toggle.classList.toggle("open");
 }
 
-// Load lesson
+
 async function loadLesson(file, title, folder) {
   currentLesson = file;
 
-  // Close mobile menu on mobile
   if (window.innerWidth <= 768) {
     closeMobileMenu();
   }
 
-  // Update title box
+
   document.getElementById("titleText").textContent = title;
   document.getElementById("subtitleText").textContent = folder;
 
-  // Remove active class from all items
+
   document.querySelectorAll(".menu-item").forEach((item) => {
     item.classList.remove("active");
   });
 
-  // Add active class to current item
+
   event.currentTarget.classList.add("active");
 
-  // Show loading
   document.getElementById("contentArea").innerHTML = `
                 <div class="text-center py-20">
                     <i class='bx bx-loader-alt bx-spin text-8xl mb-4' style="color: var(--ctp-pink)"></i>
@@ -322,21 +309,20 @@ async function loadLesson(file, title, folder) {
                 </div>
             `;
 
-  // Load markdown content from file
+
   const content = await loadMarkdownFile(file);
   const html = marked.parse(content);
   document.getElementById("contentArea").innerHTML = html;
 
-  // Scroll to top
+
   document.querySelector(".content-area").scrollTop = 0;
 }
 
-// Search functionality
 document.getElementById("searchInput").addEventListener("input", (e) => {
   const query = e.target.value.toLowerCase().trim();
 
   if (query === "") {
-    // Show all lessons
+
     document.querySelectorAll(".menu-item, .folder-item").forEach((item) => {
       item.style.display = "";
     });
@@ -349,7 +335,7 @@ document.getElementById("searchInput").addEventListener("input", (e) => {
     return;
   }
 
-  // Filter lessons
+
   Object.keys(lessonsData).forEach((folder) => {
     const folderId = folder.replace(/\s+/g, "-");
     const folderEl = document.getElementById(`folder-${folderId}`);
@@ -379,13 +365,13 @@ document.getElementById("searchInput").addEventListener("input", (e) => {
   });
 });
 
-// Initialize
+
 async function init() {
   await loadQuizLinks();
   initMenu();
 }
 
-// Mobile menu functions
+
 function toggleMobileMenu() {
   const sidebar = document.getElementById("sidebar");
   const overlay = document.getElementById("mobileOverlay");
@@ -402,13 +388,11 @@ function closeMobileMenu() {
 
 init();
 
-/* ========================================================= */
-/* 4. JAVASCRIPT (Tạo và Di chuyển Icon Độc Lập) */
-/* ========================================================= */
+
 const iconContainer = document.getElementById("icon-container");
 const titleBox = document.getElementById("title-box");
 
-// Danh sách icon sinh học/cơ thể (Unicode)
+
 const iconsList = ["🧠", "🫀", "🧬", "🦴", "🦠", "🧪", "🔬", "🦋", "🍎", "🍄"];
 const numIcons = 20;
 const activeIcons = [];
@@ -418,14 +402,13 @@ function createIcon() {
   icon.classList.add("icon");
   icon.innerHTML = iconsList[Math.floor(Math.random() * iconsList.length)];
 
-  // Thiết lập thuộc tính chuyển động ngẫu nhiên
+
   icon.speed = 0.5 + Math.random() * 1.5;
   icon.bounce = Math.random() * 20 + 5;
   icon.translateX = Math.random() * 0.5 - 0.25;
   icon.rotation = Math.random() * 360;
   icon.rotateSpeed = Math.random() * 0.3 - 0.15;
 
-  // Khởi tạo vị trí bằng thuộc tính data để tránh lỗi parseFloat
   icon.dataset.top = Math.random() * titleBox.clientHeight;
   icon.dataset.left = Math.random() * titleBox.clientWidth;
 
@@ -433,13 +416,13 @@ function createIcon() {
   return icon;
 }
 
-// Khởi tạo các icon ban đầu
+
 for (let i = 0; i < numIcons; i++) {
   const icon = createIcon();
   activeIcons.push(icon);
 }
 
-// Vòng lặp Animation (Sử dụng requestAnimationFrame cho hiệu suất)
+
 function animateBoxRain() {
   const boxHeight = titleBox.clientHeight;
   const boxWidth = titleBox.clientWidth;
@@ -448,28 +431,25 @@ function animateBoxRain() {
     let currentTop = parseFloat(icon.dataset.top);
     let currentLeft = parseFloat(icon.dataset.left);
 
-    // 1. Rơi xuống (Y-axis)
     currentTop += icon.speed;
 
-    // 2. Di chuyển ngang (X-axis) & Lắc lư (sử dụng Sine Wave)
     currentLeft += icon.translateX * Math.sin(currentTop / icon.bounce);
 
-    // 3. Quay
+
     icon.rotation += icon.rotateSpeed;
 
-    // Cập nhật vị trí và quay bằng CSS Transform
+
     icon.style.transform = `translate(${currentLeft}px, ${currentTop}px) rotate(${icon.rotation}deg)`;
     icon.style.opacity = 0.8;
 
-    // Lưu vị trí mới vào dataset
+
     icon.dataset.top = currentTop;
     icon.dataset.left = currentLeft;
 
-    // Nếu icon rơi ra khỏi đáy hộp, đặt lại lên trên cùng
-    if (currentTop > boxHeight) {
-      currentTop = -10; // Đặt lại trên đỉnh
 
-      // Cập nhật lại vị trí và tốc độ ngẫu nhiên mới
+    if (currentTop > boxHeight) {
+      currentTop = -10; 
+
       icon.dataset.top = currentTop;
       icon.dataset.left = Math.random() * boxWidth;
       icon.speed = 0.5 + Math.random() * 1.5;
@@ -479,8 +459,8 @@ function animateBoxRain() {
   requestAnimationFrame(animateBoxRain);
 }
 
-// Bắt đầu animation sau khi trang tải xong
+
 window.addEventListener("load", () => {
-  // Đảm bảo kích thước hộp đã được tính toán chính xác
+
   animateBoxRain();
 });
