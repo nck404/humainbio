@@ -2,7 +2,14 @@ const lessonsData = {
   "Hệ Cơ Quan": {
     icon: "bx-dna",
     lessons: [
-      { title: "Hệ Vận Động", file: "docs/hevd.md" },
+      { title: "Hệ Vận Động", file: "docs/hevd.md " },
+      { title: "Hệ Tuần hoàn", file: "docs/he-tuan-hoan.md" },
+      { title: "Hệ Hô hấp", file: "docs/he-ho-hap.md" },
+      { title: "Hệ Tiêu hóa", file: "docs/he-tieu-hoa.md" },
+      { title: "Hệ Bài tiết", file: "docs/he-bai-tiet.md" },
+      { title: "Hệ Thần kinh", file: "docs/he-than-kinh.md" },
+      { title: "Hệ Nội tiết", file: "docs/he-noi-tiet.md" },
+      { title: "Hệ Tuần Hoàn", file: "docs/he-tuan-hoan.md" },
       {
         title: "Chức năng tế bào",
         file: "docs/te-bao-hoc/chuc-nang-te-bao.md",
@@ -45,7 +52,6 @@ const lessonsData = {
   },
 };
 
-
 const quizLinksFile = "quiz-links.json";
 
 async function loadMarkdownFile(filePath) {
@@ -61,7 +67,6 @@ async function loadMarkdownFile(filePath) {
     return `# Lỗi tải file\n\nKhông thể tải nội dung từ: **${filePath}**\n\nVui lòng kiểm tra:\n- File có tồn tại không?\n- Đường dẫn có chính xác không?\n- Server có đang chạy không?`;
   }
 }
-
 
 async function loadQuizLinks() {
   try {
@@ -84,12 +89,11 @@ async function loadQuizLinks() {
 let currentLesson = null;
 let allLessons = [];
 let quizLinks = [];
-let currentView = "lessons"; 
+let currentView = "lessons";
 
 function initMenu() {
   const container = document.getElementById("menuContainer");
   container.innerHTML = "";
-
 
   const modeSwitcher = document.createElement("div");
   modeSwitcher.className = "mb-4 flex gap-2 justify-center";
@@ -124,14 +128,12 @@ function initMenu() {
 
   container.appendChild(modeSwitcher);
 
-
   const contentDiv = document.createElement("div");
   contentDiv.id = "menuContent";
   container.appendChild(contentDiv);
 
   renderLessonsMenu();
 }
-
 
 function renderLessonsMenu() {
   const contentDiv = document.getElementById("menuContent");
@@ -167,7 +169,6 @@ function renderLessonsMenu() {
                 `;
     contentDiv.appendChild(folderDiv);
 
-
     folderData.lessons.forEach((lesson) => {
       allLessons.push({ ...lesson, folder });
     });
@@ -200,7 +201,6 @@ function renderQuizMenu() {
   });
 }
 
-
 function switchToLessons() {
   currentView = "lessons";
   document.getElementById("btnLessons").classList.add("active");
@@ -210,7 +210,6 @@ function switchToLessons() {
   showDefaultContent();
 }
 
-
 function switchToQuiz() {
   currentView = "quiz";
   document.getElementById("btnQuiz").classList.add("active");
@@ -219,7 +218,6 @@ function switchToQuiz() {
   renderQuizMenu();
   showQuizIntro();
 }
-
 
 function showDefaultContent() {
   document.getElementById("titleText").textContent =
@@ -234,7 +232,6 @@ function showDefaultContent() {
             `;
 }
 
-
 function showQuizIntro() {
   document.getElementById("titleText").textContent = "Trắc nghiệm Sinh Học";
   document.getElementById("subtitleText").textContent =
@@ -246,7 +243,6 @@ function showQuizIntro() {
                 </div>
             `;
 }
-
 
 function loadQuiz(url, title) {
   if (window.innerWidth <= 768) {
@@ -260,9 +256,7 @@ function loadQuiz(url, title) {
     item.classList.remove("active");
   });
 
-
   event.currentTarget.classList.add("active");
-
 
   document.getElementById("contentArea").innerHTML = `
                 <iframe 
@@ -274,14 +268,12 @@ function loadQuiz(url, title) {
             `;
 }
 
-
 function toggleFolder(folderId) {
   const folder = document.getElementById(`folder-${folderId}`);
   const toggle = document.getElementById(`toggle-${folderId}`);
   folder.classList.toggle("open");
   toggle.classList.toggle("open");
 }
-
 
 async function loadLesson(file, title, folder) {
   currentLesson = file;
@@ -290,15 +282,12 @@ async function loadLesson(file, title, folder) {
     closeMobileMenu();
   }
 
-
   document.getElementById("titleText").textContent = title;
   document.getElementById("subtitleText").textContent = folder;
-
 
   document.querySelectorAll(".menu-item").forEach((item) => {
     item.classList.remove("active");
   });
-
 
   event.currentTarget.classList.add("active");
 
@@ -309,11 +298,9 @@ async function loadLesson(file, title, folder) {
                 </div>
             `;
 
-
   const content = await loadMarkdownFile(file);
   const html = marked.parse(content);
   document.getElementById("contentArea").innerHTML = html;
-
 
   document.querySelector(".content-area").scrollTop = 0;
 }
@@ -322,7 +309,6 @@ document.getElementById("searchInput").addEventListener("input", (e) => {
   const query = e.target.value.toLowerCase().trim();
 
   if (query === "") {
-
     document.querySelectorAll(".menu-item, .folder-item").forEach((item) => {
       item.style.display = "";
     });
@@ -334,7 +320,6 @@ document.getElementById("searchInput").addEventListener("input", (e) => {
     });
     return;
   }
-
 
   Object.keys(lessonsData).forEach((folder) => {
     const folderId = folder.replace(/\s+/g, "-");
@@ -365,12 +350,10 @@ document.getElementById("searchInput").addEventListener("input", (e) => {
   });
 });
 
-
 async function init() {
   await loadQuizLinks();
   initMenu();
 }
-
 
 function toggleMobileMenu() {
   const sidebar = document.getElementById("sidebar");
@@ -388,10 +371,8 @@ function closeMobileMenu() {
 
 init();
 
-
 const iconContainer = document.getElementById("icon-container");
 const titleBox = document.getElementById("title-box");
-
 
 const iconsList = ["🧠", "🫀", "🧬", "🦴", "🦠", "🧪", "🔬", "🦋", "🍎", "🍄"];
 const numIcons = 20;
@@ -401,7 +382,6 @@ function createIcon() {
   const icon = document.createElement("span");
   icon.classList.add("icon");
   icon.innerHTML = iconsList[Math.floor(Math.random() * iconsList.length)];
-
 
   icon.speed = 0.5 + Math.random() * 1.5;
   icon.bounce = Math.random() * 20 + 5;
@@ -416,12 +396,10 @@ function createIcon() {
   return icon;
 }
 
-
 for (let i = 0; i < numIcons; i++) {
   const icon = createIcon();
   activeIcons.push(icon);
 }
-
 
 function animateBoxRain() {
   const boxHeight = titleBox.clientHeight;
@@ -435,20 +413,16 @@ function animateBoxRain() {
 
     currentLeft += icon.translateX * Math.sin(currentTop / icon.bounce);
 
-
     icon.rotation += icon.rotateSpeed;
-
 
     icon.style.transform = `translate(${currentLeft}px, ${currentTop}px) rotate(${icon.rotation}deg)`;
     icon.style.opacity = 0.8;
 
-
     icon.dataset.top = currentTop;
     icon.dataset.left = currentLeft;
 
-
     if (currentTop > boxHeight) {
-      currentTop = -10; 
+      currentTop = -10;
 
       icon.dataset.top = currentTop;
       icon.dataset.left = Math.random() * boxWidth;
@@ -459,8 +433,6 @@ function animateBoxRain() {
   requestAnimationFrame(animateBoxRain);
 }
 
-
 window.addEventListener("load", () => {
-
   animateBoxRain();
 });
